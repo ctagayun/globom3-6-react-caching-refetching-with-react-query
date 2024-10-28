@@ -1,96 +1,59 @@
 //import { useNavigate } from "react-router-dom";
-//import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-//import axios, { AxiosError, AxiosResponse } from "axios";
 //import Problem from "../types/problem";
-
-import { useEffect, useState } from "react";
-import config from "../config";
 import { House } from "./../types/house";
+import { useQuery} from "@tanstack/react-query";
+import axios, { AxiosError} from "axios";
+import config from "../config";
+
 
 //This is a custom hook. Basically a custom hook is a function
-//that can use other hooks such as useSt
-const useFetchHouses = (): House[] => {
+//that can use other hooks such as useState.
 
-    const [houses, setHouses] = useState<House[]>([]);
+//First we want to infer the return type.This hook uses React Query.
+//remove House[] array typing seFetchHouses = () : House[] =>...   
 
-    //the first parameter is a function. The second parameter
-    //is a dependency array. If the dependency array changes, the 
-    //the function will fire.
-    //Since the dependency array is empty the function will only 
-    //fire when the component is first rendered
-    useEffect(() => { //this is the start of first parameter a function
-      const fetchHouses = async () => { 
-        const rsp = await fetch(`${config.baseApiUrl}/houses`);
-        const houses = await rsp.json();  //deserialize to JSON
-        setHouses(houses); //set the state after which the component will be re-rendered
-        };
-        fetchHouses();
-      }, //eof function
-      []   //this is the second parameter the "dependency array"
-    ) //eof useEffect
+//Next we don't need a call to useState and useEffect anymore see lines 32-42
+//and that's because React Query is taking care of managing the state for us.
 
-    return houses;
-  }; //eof useFetchHouses
+//UseQuery is something that fetch data. It is generic. First it expects
+//the type of data we expect to get (e.g House[]) and second is a type 
+//we expect to get when something goes wrong.
 
+//Sidebar: 
+//  useQuery is a hook that has internal state. Therefore the hook we define
+//here will re-render when the internal state of useQuery changes. And that
+//will cause all components that use useFetchHouses snd child components
+//to re-render as well.
 
-
-// const useFetchHouses = () => {
-//   return useQuery<House[], AxiosError>({
-//     queryKey: ["houses"],
-//     queryFn: () =>
-//       axios.get(`${config.baseApiUrl}/houses`).then((resp) => resp.data),
-//   });
-// };
-
-// const useFetchHouse = (id: number) => {
-//   return useQuery<House, AxiosError>({
-//     queryKey: ["houses", id],
-//     queryFn: () =>
-//       axios.get(`${config.baseApiUrl}/house/${id}`).then((resp) => resp.data),
-//   });
-// };
-
-// const useAddHouse = () => {
-//   const queryClient = useQueryClient();
-//   const nav = useNavigate();
-//   return useMutation<AxiosResponse, AxiosError<Problem>, House>({
-//     mutationFn: (h) => axios.post(`${config.baseApiUrl}/houses`, h),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["houses"] });
-//       nav("/");
-//     },
-//   });
-// };
-
-// const useUpdateHouse = () => {
-//   const queryClient = useQueryClient();
-//   const nav = useNavigate();
-//   return useMutation<AxiosResponse, AxiosError<Problem>, House>({
-//     mutationFn: (h) => axios.put(`${config.baseApiUrl}/houses`, h),
-//     onSuccess: (_, house) => {
-//       queryClient.invalidateQueries({ queryKey: ["houses"] });
-//       nav(`/house/${house.id}`);
-//     },
-//   });
-// };
-
-// const useDeleteHouse = () => {
-//   const queryClient = useQueryClient();
-//   const nav = useNavigate();
-//   return useMutation<AxiosResponse, AxiosError, House>({
-//     mutationFn: (h) => axios.delete(`${config.baseApiUrl}/houses/${h.id}`),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["houses"] });
-//       nav("/");
-//     },
-//   });
-// };
+//Objects fed to useQuery:
+//  queryKey: ["houses"] - the queryKey property inside that object is the 
+//     cache key it has to be in the form of array.
+//  queryFn: this property contains the stuff on how you want to get the data
+const useFetchHouses = () => {
+  return useQuery<House[], AxiosError>({
+    queryKey: ["houses"], 
+    queryFn: () =>
+      axios.get(`${config.baseApiUrl}/houses`).then((resp) => resp.data),
+  });
+};
 
 export default useFetchHouses;
-//export {
- //  useFetchHouses,
- // useFetchHouse,
-  //useAddHouse,
- // useUpdateHouse,
- // useDeleteHouse,
-//};
+
+
+//Note: (): House[] - this means we are declaring the return type
+//to be of type House[] array.
+// const useFetchHouses = (): House[] => {
+//   const [houses, setHouses] = useState<House[]>([]);
+//   useEffect(() => { 
+//     const fetchHouses = async () => { 
+//       const rsp = await fetch(`${config.baseApiUrl}/houses`);
+//       const houses = await rsp.json();  
+//       setHouses(houses); 
+//       };
+//       fetchHouses();
+//     }, //eof function
+//     []   //this is the second parameter the "dependency array"
+//   ) 
+
+//   return houses;
+// }; //eof useFetchHouses

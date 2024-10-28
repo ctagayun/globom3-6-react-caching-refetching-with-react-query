@@ -1,5 +1,11 @@
 //import { useState } from 'react'
 
+/* 
+   This version aims to update the screen data by using
+   shared state, caching, controlled re-fetches and retries.
+   In addition this version of the app will prevent HouseList hook
+   to execute each time it is used.
+*/
 import HouseList from '../house/HouseList'
 import './App.css'
 import Header from './Header'

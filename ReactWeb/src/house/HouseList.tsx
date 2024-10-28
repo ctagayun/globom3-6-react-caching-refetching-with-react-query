@@ -2,20 +2,10 @@ import useFetchHouses from "../hooks/HouseHooks";
 
 const HouseList = () => {
   
-  //substitute the custom hook 
-  const houses =useFetchHouses();
+  //call the custom hook. In order to get to data
+  //you need to destructure it
+  const {data} =useFetchHouses();
 
-  //Move the following code to HouseHook
-  // const [houses, setHouses] = useState<House[]>
-  //       ([]); //dependency array
-
-  // const fetchHouses = async () => {
-  //      const rsp = await fetch(`${config.baseApiUrl}/houses`);
-  //      const houses = await rsp.json();  //deserialize to JSON
-  //      setHouses(houses); //set the state after which the component will be re-rendered
-  // };
-  //  fetchHouses();
-   
   return (
     <div>
       <div className="row mb-2">
@@ -32,7 +22,10 @@ const HouseList = () => {
           </tr>
         </thead>
         <tbody>
-            {houses.map((h) => (
+            {/* We have to do our mapping on data as well. data might be 
+                empty. So determing if data is falsy before we do the mapping.
+             */}
+            {data && data.map((h) => (
               <tr key={h.id}>
                 <td>{h.address}</td>
                 <td>{h.country}</td>

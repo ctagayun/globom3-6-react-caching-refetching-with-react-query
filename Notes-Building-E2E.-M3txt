@@ -168,3 +168,32 @@ Module 3: Getting and Displaying Data
           }
         
        - then go to HouseList and refactor to call useFetchHouses custom hook
+
+ 6. React: Caching and Refetching with React Query and Using Axios
+     - https://app.pluralsight.com/ilx/video-courses/fbbac3b2-0e56-464b-92f2-0b877f92f12c/6feac58d-c6dc-40ae-afd9-6358f0bf8bc1/186797d5-0998-4f0f-be58-47b855a6e15e
+     - 
+     - This version aims to update the screen data by using
+       shared state, caching, controlled re-fetches and retries.
+       In addition this version of the app will prevent HouseList hook
+       to execute each time it is used. This can be accomplised using 
+       "React-Query"
+
+     - first npm install axios@1 - we will use this library instead of 
+       "fetch"
+ 
+     - npm install @tanstack/react-query@5
+
+     - go to globom3-6-keep-screen-updated-by-using-axios-caching-and-react-query
+
+     - modify src/hooks/HouseHooks.ts to use useQuery and Axios
+
+     - after that modify src/house/houseList to call the new useFetchHouses
+
+     - we have one more thing we have to do. Go to src/main.tsx.
+       React Query relies on QueryClient object. we instantiate that
+       object and use a QueryClientProvider to make it available to all
+       child components.
+      
+     - Finally test it: 
+         - dotnet run on API project 
+         - npm run dev on Reactweb
