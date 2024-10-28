@@ -178,12 +178,13 @@ Module 3: Getting and Displaying Data
        to execute each time it is used. This can be accomplised using 
        "React-Query"
 
+     - go to demo globom3-6-keep-screen-updated-by-using-axios-caching-and-react-query
+
      - first npm install axios@1 - we will use this library instead of 
        "fetch"
  
      - npm install @tanstack/react-query@5
 
-     - go to globom3-6-keep-screen-updated-by-using-axios-caching-and-react-query
 
      - modify src/hooks/HouseHooks.ts to use useQuery and Axios
 
